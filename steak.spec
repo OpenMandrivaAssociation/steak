@@ -9,7 +9,7 @@ BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Source0:      Steak.%version.tar.bz2
 Patch0:       Steak-1.7.3-install.patch.bz2
 Patch1:	      steak-1.7.3-aspell.patch.bz2	
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 Requires: aspell-de
 Requires: aspell-en
 

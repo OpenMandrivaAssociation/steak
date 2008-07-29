@@ -4,7 +4,7 @@ License:      GPL
 Group:        System/Internationalization
 Summary:      English <-> German translator
 Version:      1.7.3
-Release: %mkrel 5
+Release: %mkrel 7
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Source0:      Steak.%version.tar.bz2
 Patch0:       Steak-1.7.3-install.patch.bz2

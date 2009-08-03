@@ -1,10 +1,10 @@
 Name:         steak
-Url:          http://www.tm.informatik.uni-frankfurt.de/~razi/steak/steak.html
-License:      GPL
+Url:          http://www.informatik.uni-frankfurt.de/~razi/steak/steak.html
+License:      GPLv2+
 Group:        System/Internationalization
 Summary:      English <-> German translator
 Version:      1.7.3
-Release: %mkrel 8
+Release: %mkrel 9
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Source0:      Steak.%version.tar.bz2
 Patch0:       Steak-1.7.3-install.patch.bz2
@@ -21,7 +21,7 @@ arguments.
 
 %prep
 %setup -q -n Steak
-%patch -p 0 -E
+%patch0 -p 0 -E
 %patch1 -p0 -b .aspell
 find -type d | xargs chmod 755
 perl -pi -e "s!xxxLIBDIRx!%_libdir!" steak_install.sh

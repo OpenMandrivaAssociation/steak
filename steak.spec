@@ -4,14 +4,17 @@ License:      GPLv2+
 Group:        System/Internationalization
 Summary:      English <-> German translator
 Version:      1.7.3
-Release: %mkrel 9
+Release: %mkrel 10
 BuildRoot:    %{_tmppath}/%{name}-%{version}-build
 Source0:      Steak.%version.tar.bz2
-Patch0:       Steak-1.7.3-install.patch.bz2
-Patch1:	      steak-1.7.3-aspell.patch.bz2	
+Patch0:       Steak-1.7.3-install.patch
+Patch1:	      steak-1.7.3-aspell.patch
+Patch2:	      Steak-recode-printbuffer-to-utf8.patch
 BuildRequires:	X11-devel
+BuildRequires:	recode
 Requires: aspell-de
 Requires: aspell-en
+Requires: recode
 
 %description
 steak translates and explain words. You can use it to translate
@@ -23,8 +26,11 @@ arguments.
 %setup -q -n Steak
 %patch0 -p 0 -E
 %patch1 -p0 -b .aspell
+%patch2 -p1
 find -type d | xargs chmod 755
 perl -pi -e "s!xxxLIBDIRx!%_libdir!" steak_install.sh
+recode l9..u8 iso2txt 
+recode l9..u8 Datensatz/ger-eng.txt
 
 %build
 make X11LIBDIR="-L%{_prefix}/X11R6/%_lib"
@@ -34,11 +40,26 @@ rm -rf %buildroot
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/Steak/
 echo | %makeinstall_std
 
+cat > README.urpmi <<EOF
+Anpassungen spezifisch für das Mandriva-Paket
+
+Die Datenbank und das Programm wurden so umgestellt, dass es nur noch in der
+UTF-8-Kodierung funktioniert, die inzwischen Standard ist. Die ursprüngliche
+Version funktionierte nur mit ISO-8859-1.
+
+
+Mandriva RPM specific notes
+
+The database and the program were changed to work in the UTF-8 encoding only. 
+This is the current default. The original version only worked in ISO-8859-1.
+EOF
+
+
 %clean
 rm -rf %buildroot
 
 %files
 %defattr(-,root,root)
-%doc README README.eng INSTALL INSTALL.ger ChangeLog 
+%doc README* INSTALL INSTALL.ger ChangeLog
 %{_bindir}/*
 %{_libdir}/Steak

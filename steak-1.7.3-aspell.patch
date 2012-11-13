@@ -1,0 +1,88 @@
+--- woerterbuch.aspell	2000-01-04 03:37:16.000000000 +0100
++++ woerterbuch	2003-12-16 11:26:38.000000000 +0100
+@@ -1,5 +1,5 @@
+ #!/bin/sh
+-# Benoetigte Pakete: grep sed awk ispell
++# Benoetigte Pakete: grep sed awk aspell
+ #
+ ################################################################
+ # Environment
+@@ -20,8 +20,8 @@
+ GREP="grep"
+ # 
+ SLEEPTIME=30
+-# Die Option, mit der man ispell bei den deutschsprachigen Texten aufruft:
+-ISPELLDEUTSCH="-d deutsch -Tlatin1"
++# Die Option, mit der man aspell bei den deutschsprachigen Texten aufruft:
++ASPELLDEUTSCH="--lang de"
+ # Die Uebersetzung folgt nach dem Regel:
+ #CONFIGVAR="ENGLISCH<->DEUTSCH"
+ CONFIGVAR="ENGLISCH->DEUTSCH"
+@@ -50,7 +50,7 @@
+ POLLVAR="J"
+ KONTEXTAUSGABEVAR="J"
+ WAITVAR="J"
+-ISPELLVAR="J"
++ASPELLVAR="J"
+ CLIPBOARDVAR="N"
+ # 1 steht fuer AND, 2 fuer OR und 0 fuer gar keine Verbindung
+ ANDORVAR="0"
+@@ -305,11 +305,11 @@
+ 		;;
+ 	    -and)
+ 		ANDORVAR="1"
+-		ISPELLVAR="N"
++		ASPELLVAR="N"
+ 		;;
+ 	    -or)
+ 		ANDORVAR="2"
+-		ISPELLVAR="N"
++		ASPELLVAR="N"
+ 		;;
+ 	    -e)
+ 		CONFIGVAR="ENGLISCH->DEUTSCH"
+@@ -325,10 +325,10 @@
+ 		POLLVAR="N"
+ 		WAITVAR="N"
+ 		SLEEPTIME=0
+-		ISPELLVAR="N"
++		ASPELLVAR="N"
+ 		;;
+-	    -noispell)
+-		ISPELLVAR="N"
++	    -noaspell)
++		ASPELLVAR="N"
+ 		;;
+ 	    -k)
+ 		POLLVAR="N"
+@@ -402,25 +402,25 @@
+ 	ausgabe_funktion
+     else
+ 	echo "Kein Wort wurde mit dem Praefix \"$XXX\" gefunden."
+-	if [ $ISPELLVAR = "J" ]
++	if [ $ASPELLVAR = "J" ]
+ 	then
+-	    echo "Ispell wird gestartet!!!"
++	    echo "Aspell wird gestartet!!!"
+ 	    sleep 2
+ 	    case $CONFIGVAR in
+ 		"ENGLISCH->DEUTSCH")
+ 		    echo "$XXX" > $TMPDATEI
+-		    ispell $TMPDATEI
++		    aspell --lang en -c $TMPDATEI
+ 		    XXX=`cat $TMPDATEI`  #ACHTUNG was passiert falls cat mehrere Namen ausspuckt!!!
+ 		    ;;
+ 		"DEUTSCH->ENGLISCH")
+ 		    echo "$XXXUMLAUT" > $TMPDATEI
+-		    ispell $ISPELLDEUTSCH $TMPDATEI
++		    aspell -c $ASPELLDEUTSCH $TMPDATEI
+ 		    XXX=`cat $TMPDATEI | sed -f $BINDIR/iso2txt`
+ 		    XXXUMLAUT=`cat $TMPDATEI`
+ 		    ;;
+ 		"ENGLISCH<->DEUTSCH")
+ 		    echo "$XXX" > $TMPDATEI
+-		    ispell $TMPDATEI
++		    aspell --lang en  -c  $TMPDATEI
+ 		    XXX=`cat $TMPDATEI` 
+ 	    esac
+ 	    if ganze_wort_suchen_funktion

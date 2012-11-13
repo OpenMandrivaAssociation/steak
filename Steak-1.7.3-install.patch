@@ -1,0 +1,88 @@
+--- Makefile
++++ Makefile	2003/02/14 15:51:52
+@@ -63,5 +63,5 @@
+ 
+ install:
+ 	@echo
+-	@./steak_install.sh
++	@./steak_install.sh $(DESTDIR)
+ 	@echo
+--- Printbuffer/Makefile
++++ Printbuffer/Makefile	2003/02/14 15:51:52
+@@ -4,7 +4,8 @@
+ NODENAME := $(shell uname -n)
+ EINGABEDEP := $(patsubst %.C,%.o,$(wildcard *.C))
+ CC = gcc
+-COPTS = -I/usr/X11R6/include -I/include -L/usr/X11R6/lib -lXt -lX11 -L/local/lib -L/usr/lib 
++X11LIBDIR = -L/usr/X11R6/lib
++COPTS = -I/usr/X11R6/include -I/include $(X11LIBDIR) -lXt -lX11 -L/local/lib -L/usr/lib 
+ 
+ 
+ all:		info $(EINGABE)
+--- steak_install.sh
++++ steak_install.sh	2003/02/14 15:51:52
+@@ -6,18 +6,18 @@
+ echo
+ echo
+ echo "Unter welchem Verzeichnis wollen Sie die Programme und den Datensatz"
+-echo "kopieren? [/usr/local/Steak]"
+-read SteakVERZEICHNIS
++echo "kopieren? [/usr/share/Steak]"
++#read SteakVERZEICHNIS
+ 
+ if [ -z $SteakVERZEICHNIS ]
+ then 
+-    SteakVERZEICHNIS=/usr/local/Steak
++    SteakVERZEICHNIS=xxxLIBDIRx/Steak
+ fi
+ 
+ mkdir "$SteakVERZEICHNIS"
+ 
+-cp -r Datensatz/ "$SteakVERZEICHNIS"
+-cp mini_steak_icon.xpm pinguin_steak_icon.xpm copyrights.txt help.txt version.txt README README.eng iso2txt poll printbuffer spacefilter .Steakconfig "$SteakVERZEICHNIS"
++cp -r Datensatz/ "$1/$SteakVERZEICHNIS"
++cp mini_steak_icon.xpm pinguin_steak_icon.xpm copyrights.txt help.txt version.txt README README.eng iso2txt poll printbuffer spacefilter .Steakconfig "$1/$SteakVERZEICHNIS"
+ 
+ 
+ cp woerterbuch /tmp/woerterbuch$$
+@@ -35,7 +35,7 @@
+ echo "---" >> /tmp/diff$$
+ echo "> BINDIR=$SteakVERZEICHNIS" >> /tmp/diff$$
+ patch /tmp/woerterbuch$$ /tmp/diff$$
+-cp /tmp/woerterbuch$$ $SteakVERZEICHNIS/woerterbuch
++cp /tmp/woerterbuch$$ $1/$SteakVERZEICHNIS/woerterbuch
+ 
+ 
+ NUMMER=`grep -n "^SteakDIR=.*" $SteakVERZEICHNIS/.Steakconfig | cut -f1 -d:`
+@@ -44,24 +44,25 @@
+ echo "---" >> /tmp/diff$$
+ echo "> SteakDIR=$SteakVERZEICHNIS/Datensatz" >> /tmp/diff$$
+ patch $SteakVERZEICHNIS/.Steakconfig /tmp/diff$$
+-rm -f $SteakVERZEICHNIS/.Steakconfig.orig
++rm -f $1/$SteakVERZEICHNIS/.Steakconfig.orig
+ 
+ rm /tmp/diff$$ /tmp/woerterbuch$$* 
+ echo
+ echo "Ihre PATH-Variable beinhaltet folgende Verzeichnisse!"
+ echo "$PATH"
+ echo "Wo soll ein Link zu dem woerterbuch-Programm gesetzt werden,"
+-echo "damit Sie das Programm aufrufen koennen? [/usr/local/bin]"
++echo "damit Sie das Programm aufrufen koennen? [/usr/bin]"
+ read LINKVERZEICHNIS
+ 
+ if [ -z $LINKVERZEICHNIS ]
+ then 
+-    LINKVERZEICHNIS=/usr/local/bin
++    LINKVERZEICHNIS=/usr/bin
+ fi 
+ 
+-rm -f $LINKVERZEICHNIS/woerterbuch $LINKVERZEICHNIS/steak
+-ln -s $SteakVERZEICHNIS/woerterbuch $LINKVERZEICHNIS/woerterbuch
+-ln -s $SteakVERZEICHNIS/woerterbuch $LINKVERZEICHNIS/steak
++mkdir -p $1/$LINKVERZEICHNIS
++rm -f $1/$LINKVERZEICHNIS/woerterbuch $1/$LINKVERZEICHNIS/steak
++ln -s $SteakVERZEICHNIS/woerterbuch $1/$LINKVERZEICHNIS/woerterbuch
++ln -s $SteakVERZEICHNIS/woerterbuch $1/$LINKVERZEICHNIS/steak
+ 
+ 
+ echo

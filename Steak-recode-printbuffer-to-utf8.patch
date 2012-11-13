@@ -1,0 +1,36 @@
+diff -p -up Steak/woerterbuch~ Steak/woerterbuch
+--- Steak/woerterbuch~	2010-01-27 10:11:29.000000000 +0100
++++ Steak/woerterbuch	2010-01-27 10:12:28.000000000 +0100
+@@ -281,8 +281,8 @@ fi
+ if [ $# -eq 0 ]
+ # Falls das Programm ohne Arg. gerufen wird, wird das Wort, das im Buffer ist uebernommen!
+ then
+-    XXX=`$BUFFERPROGRAMM | sed -f $BINDIR/iso2txt`
+-    XXXUMLAUT=`$BUFFERPROGRAMM`
++    XXX=`$BUFFERPROGRAMM  | recode l9..u8 | sed -f $BINDIR/iso2txt`
++    XXXUMLAUT=`$BUFFERPROGRAMM | recode l9..u8`
+ # Sonst wird nach dem Arg1 gesucht...
+ else
+     for XXXSCHLEIFE
+@@ -340,8 +340,8 @@ else
+ 		;;
+ 	    -clipboard)
+ 		CLIPBOARDVAR="J"
+-		XXX=`$BUFFERPROGRAMM | sed -f $BINDIR/iso2txt`
+-		XXXUMLAUT=`$BUFFERPROGRAMM`
++		XXX=`$BUFFERPROGRAMM  | recode l9..u8 | sed -f $BINDIR/iso2txt`
++		XXXUMLAUT=`$BUFFERPROGRAMM | recode l9..u8`
+ 		;;
+ 	    *) 
+ 		if [ $CLIPBOARDVAR = "N" ]
+@@ -353,8 +353,8 @@ else
+     done
+     if [ -z "$XXX" ]
+     then
+-	XXX=`$BUFFERPROGRAMM | sed -f $BINDIR/iso2txt`
+-	XXXUMLAUT=`$BUFFERPROGRAMM`
++	XXX=`$BUFFERPROGRAMM  | recode l9..u8| sed -f $BINDIR/iso2txt`
++	XXXUMLAUT=`$BUFFERPROGRAMM | recode l9..u8`
+     fi
+ fi
+ 

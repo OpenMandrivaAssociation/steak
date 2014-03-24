@@ -10,6 +10,7 @@ Patch0:       Steak-1.7.3-install.patch
 Patch1:	      steak-1.7.3-aspell.patch
 Patch2:	      Steak-recode-printbuffer-to-utf8.patch
 BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xt)
 BuildRequires:	recode
 Requires: aspell-de
 Requires: aspell-en

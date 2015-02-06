@@ -4,7 +4,7 @@ License:      GPLv2+
 Group:        System/Internationalization
 Summary:      English <-> German translator
 Version:      1.7.3
-Release:      13
+Release:      14
 Source0:      Steak.%{version}.tar.bz2
 Patch0:       Steak-1.7.3-install.patch
 Patch1:	      steak-1.7.3-aspell.patch

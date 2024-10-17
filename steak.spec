@@ -1,5 +1,5 @@
 Name:         steak
-Url:          http://www.informatik.uni-frankfurt.de/~razi/steak/steak.html
+Url:          https://www.informatik.uni-frankfurt.de/~razi/steak/steak.html
 License:      GPLv2+
 Group:        System/Internationalization
 Summary:      English <-> German translator
